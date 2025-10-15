@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tables - [[${restaurant.name}]]</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1 th:text="'Tables for ' + ${restaurant.name}"></h1>
+<a th:href="@{/restaurants}">← Back</a>
+
+<table>
+    <thead>
+    <tr><th>Label</th><th>Capacity</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="t : ${tables}">
+        <td th:text="${t.label}"></td>
+        <td th:text="${t.capacity}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

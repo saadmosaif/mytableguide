@@ -8,17 +8,17 @@ import lombok.*;
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Restaurant {
+public class DiningTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    private String label;
+    private int capacity;
 
-    private String address;
-    private String phone;
-    private String email;
-    private String openingHours;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Restaurant restaurant;
 }
