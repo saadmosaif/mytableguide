@@ -2,36 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Owner | Reservations</title>
+    <title>Reservations - Owner</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <style>
+        .badge-pending { background-color: #ffc107; }
+        .badge-confirmed { background-color: #28a745; }
+        .badge-canceled { background-color: #dc3545; }
+    </style>
 </head>
 <body class="bg-light">
 <div class="container py-5">
-    <h2 th:text="${restaurant.name}">Restaurant</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 th:text="${restaurant.name}">Restaurant</h2>
+        <a th:href="@{/logout}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
     <h5 class="text-muted">Reservations</h5>
 
-    <table class="table table-striped mt-3">
+    <table class="table table-striped align-middle">
         <thead>
-        <tr><th>ID</th><th>Client</th><th>Email</th><th>Guests</th><th>When</th><th>Status</th></tr>
+        <tr>
+            <th>ID</th><th>Client</th><th>Email</th><th>Guests</th>
+            <th>Date & Time</th><th>Status</th><th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         <tr th:each="res : ${reservations}">
             <td th:text="${res.id}">1</td>
-            <td th:text="${res.clientName}">John</td>
+            <td th:text="${res.clientName}">John Doe</td>
             <td th:text="${res.clientEmail}">john@x.com</td>
-            <td th:text="${res.guests}">2</td>
-            <td th:text="${#temporals.format(res.reservationTime, 'dd MMM yyyy HH:mm')}">15 Oct 2025 20:00</td>
+            <td th:text="${res.guests}">4</td>
+            <td th:text="${#temporals.format(res.reservationTime, 'dd MMM yyyy HH:mm')}">15 Oct 2025</td>
             <td>
-                <span th:text="${res.status}">PENDING</span>
-                <!-- you can add approve/cancel buttons that hit your API PUT endpoint -->
+          <span th:switch="${res.status}">
+            <span th:case="'PENDING'" class="badge badge-pending text-dark">Pending</span>
+            <span th:case="'CONFIRMED'" class="badge badge-confirmed">Confirmed</span>
+            <span th:case="'CANCELED'" class="badge badge-canceled">Canceled</span>
+          </span>
+            </td>
+            <td>
+                <!-- Approve / Cancel buttons (optional for next step) -->
+                <form th:action="@{'/api/restaurants/reservations/' + ${res.id} + '/status'}"
+                      method="post" style="display:inline;">
+                    <input type="hidden" name="status" value="CONFIRMED"/>
+                    <button class="btn btn-sm btn-success">Approve</button>
+                </form>
+                <form th:action="@{'/api/restaurants/reservations/' + ${res.id} + '/status'}"
+                      method="post" style="display:inline;">
+                    <input type="hidden" name="status" value="CANCELED"/>
+                    <button class="btn btn-sm btn-danger">Cancel</button>
+                </form>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <a th:href="@{'/owner'}" class="btn btn-outline-secondary">Back</a>
-    <a th:href="@{'/owner/restaurants/' + ${restaurant.id} + '/tables'}" class="btn btn-primary ms-2">Tables</a>
-    <a class="btn btn-outline-danger float-end" th:href="@{/logout}">Logout</a>
+    <div class="mt-4">
+        <a th:href="@{/owner}" class="btn btn-outline-secondary">Back</a>
+        <a th:href="@{'/owner/restaurants/' + ${restaurant.id} + '/tables'}"
+           class="btn btn-primary ms-2">Tables</a>
+    </div>
 </div>
 </body>
 </html>

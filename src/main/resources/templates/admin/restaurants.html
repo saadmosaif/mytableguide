@@ -1,28 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Admin | Restaurants</title>
+    <meta charset="UTF-8">
+    <title>Restaurants</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 </head>
 <body class="bg-light">
 <div class="container py-5">
-    <h2>Restaurants</h2>
-    <table class="table table-striped mt-3">
+    <div class="d-flex justify-content-between mb-3">
+        <h2>Restaurants</h2>
+        <a th:href="@{/logout}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <a th:href="@{/admin/restaurants/new}" class="btn btn-primary mb-3">+ Add Restaurant</a>
+
+    <table class="table table-striped align-middle">
         <thead>
-        <tr><th>ID</th><th>Name</th><th>Address</th><th>Opening</th></tr>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Owner</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         <tr th:each="r : ${restaurants}">
             <td th:text="${r.id}">1</td>
             <td th:text="${r.name}">Le Gourmet</td>
+            <td th:text="${r.owner != null ? r.owner.username : '—'}">owner</td>
             <td th:text="${r.address}">Casablanca</td>
-            <td th:text="${r.openingHours}">09:00-23:00</td>
+            <td th:text="${r.email}">mail@resto.ma</td>
+            <td>
+                <a th:href="@{'/admin/restaurants/edit/' + ${r.id}}" class="btn btn-sm btn-outline-primary">Edit</a>
+                <a th:href="@{'/admin/restaurants/' + ${r.id} + '/tables'}" class="btn btn-sm btn-outline-secondary">Tables</a>
+                <a th:href="@{'/admin/restaurants/delete/' + ${r.id}}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Delete this restaurant?')">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
+
     <a th:href="@{/admin}" class="btn btn-outline-secondary">Back</a>
-    <a class="btn btn-outline-danger float-end" th:href="@{/logout}">Logout</a>
 </div>
 </body>
 </html>

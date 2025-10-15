@@ -2,26 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Owner | Tables</title>
+    <title>Tables - Owner</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 </head>
 <body class="bg-light">
 <div class="container py-5">
-    <h2 th:text="${restaurant.name}">Restaurant</h2>
-    <h5 class="text-muted">Tables</h5>
-    <table class="table table-striped mt-3">
-        <thead><tr><th>ID</th><th>Label</th><th>Capacity</th></tr></thead>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 th:text="${restaurant.name}">Restaurant</h2>
+        <a th:href="@{/logout}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr><th>ID</th><th>Label</th><th>Capacity</th></tr>
+        </thead>
         <tbody>
         <tr th:each="t : ${tables}">
             <td th:text="${t.id}">1</td>
-            <td th:text="${t.label}">T1</td>
+            <td th:text="${t.label}">A1</td>
             <td th:text="${t.capacity}">4</td>
         </tr>
         </tbody>
     </table>
-    <a th:href="@{'/owner'}" class="btn btn-outline-secondary">Back</a>
-    <a th:href="@{'/owner/restaurants/' + ${restaurant.id} + '/reservations'}" class="btn btn-primary ms-2">Reservations</a>
-    <a class="btn btn-outline-danger float-end" th:href="@{/logout}">Logout</a>
+
+    <div class="mt-4">
+        <a th:href="@{/owner}" class="btn btn-outline-secondary">Back</a>
+        <a th:href="@{'/owner/restaurants/' + ${restaurant.id} + '/reservations'}"
+           class="btn btn-primary ms-2">Reservations</a>
+    </div>
 </div>
 </body>
 </html>

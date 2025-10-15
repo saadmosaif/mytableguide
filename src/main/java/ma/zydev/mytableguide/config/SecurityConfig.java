@@ -1,22 +1,29 @@
 package ma.zydev.mytableguide.config;
 
+import ma.zydev.mytableguide.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
 
+    private final CustomUserDetailsService userDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-
+                .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
                         // Public routes (client booking widget + static)
                         .requestMatchers("/", "/index", "/reserve/**", "/css/**", "/js/**", "/images/**").permitAll()
@@ -44,19 +51,16 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // In-memory users (for testing). Switch to DB users later.
     @Bean
-    public UserDetailsService userDetailsService() {
-        var admin = User.withUsername("admin")
-                .password("{noop}admin123") // {noop} = no encoder (for dev only)
-                .roles("ADMIN")
-                .build();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-        var owner = User.withUsername("owner")
-                .password("{noop}owner123")
-                .roles("OWNER")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, owner);
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 }

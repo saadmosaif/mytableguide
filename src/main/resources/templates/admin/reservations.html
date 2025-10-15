@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Reservations</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="d-flex justify-content-between mb-3">
+        <h2>All Reservations</h2>
+        <a th:href="@{/logout}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th>ID</th><th>Restaurant</th><th>Table</th><th>Client</th><th>Email</th><th>Guests</th><th>Date</th><th>Status</th><th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${reservations}">
+            <td th:text="${r.id}">1</td>
+            <td th:text="${r.restaurant.name}">Le Gourmet</td>
+            <td th:text="${r.table.label}">T1</td>
+            <td th:text="${r.clientName}">John</td>
+            <td th:text="${r.clientEmail}">john@x.com</td>
+            <td th:text="${r.guests}">2</td>
+            <td th:text="${#temporals.format(r.reservationTime, 'dd MMM yyyy HH:mm')}">15 Oct 2025</td>
+            <td th:text="${r.status}">PENDING</td>
+            <td>
+                <a th:href="@{'/admin/reservations/delete/' + ${r.id}}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin}" class="btn btn-outline-secondary">Back</a>
+</div>
+</body>
+</html>

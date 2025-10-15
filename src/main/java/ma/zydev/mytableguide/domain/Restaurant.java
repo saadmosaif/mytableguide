@@ -21,4 +21,8 @@ public class Restaurant {
     private String phone;
     private String email;
     private String openingHours;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
 }

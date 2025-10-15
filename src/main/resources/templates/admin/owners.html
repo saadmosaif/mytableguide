@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Owners</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="d-flex justify-content-between mb-3">
+        <h2>Owners</h2>
+        <a th:href="@{/logout}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <a th:href="@{/admin/owners/new}" class="btn btn-primary mb-3">+ Add Owner</a>
+
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr><th>ID</th><th>Username</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${owners}">
+            <td th:text="${u.id}">1</td>
+            <td th:text="${u.username}">owner</td>
+            <td>
+                <a th:href="@{'/admin/owners/delete/' + ${u.id}}" class="btn btn-sm btn-danger"
+                   onclick="return confirm('Delete this owner?')">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin}" class="btn btn-outline-secondary">Back</a>
+</div>
+</body>
+</html>

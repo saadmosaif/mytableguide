@@ -2,24 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Owner | Dashboard</title>
+    <title>My Restaurants</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 </head>
 <body class="bg-light">
 <div class="container py-5">
-    <h2>Owner Dashboard</h2>
-    <p class="text-muted">Select a restaurant to manage</p>
-
-    <div class="list-group">
-        <a class="list-group-item list-group-item-action"
-           th:each="r : ${restaurants}"
-           th:href="@{'/owner/restaurants/' + ${r.id} + '/reservations'}">
-            <strong th:text="${r.name}">Le Gourmet</strong>
-            <span class="text-muted" th:text="${r.address}">Casablanca</span>
-        </a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Restaurants</h2>
+        <a th:href="@{/logout}" class="btn btn-outline-danger">Logout</a>
     </div>
 
-    <a class="btn btn-outline-danger mt-3" th:href="@{/logout}">Logout</a>
+    <div th:if="${#lists.isEmpty(restaurants)}" class="alert alert-warning">
+        No restaurant has been assigned to your account yet.
+    </div>
+
+    <div th:if="${!#lists.isEmpty(restaurants)}" class="row g-3">
+        <div class="col-md-6" th:each="r : ${restaurants}">
+            <div class="card shadow-sm p-3">
+                <h5 th:text="${r.name}">Restaurant Name</h5>
+                <p class="text-muted mb-2" th:text="${r.address}">Address</p>
+                <div class="d-flex gap-2">
+                    <a th:href="@{'/owner/restaurants/' + ${r.id} + '/reservations'}"
+                       class="btn btn-primary btn-sm">Reservations</a>
+                    <a th:href="@{'/owner/restaurants/' + ${r.id} + '/tables'}"
+                       class="btn btn-outline-primary btn-sm">Tables</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

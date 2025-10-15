@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Tables</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 th:text="${restaurant.name}">Restaurant</h2>
+        <a th:href="@{/logout}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <h5>Existing Tables</h5>
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr><th>ID</th><th>Label</th><th>Capacity</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${tables}">
+            <td th:text="${t.id}">1</td>
+            <td th:text="${t.label}">T1</td>
+            <td th:text="${t.capacity}">4</td>
+            <td>
+                <a th:href="@{'/admin/restaurants/' + ${restaurant.id} + '/tables/delete/' + ${t.id}}"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Delete this table?')">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h5 class="mt-4">Add New Table</h5>
+    <form th:action="@{'/admin/restaurants/' + ${restaurant.id} + '/tables/save'}" method="post" th:object="${table}">
+        <div class="row g-2 mb-3">
+            <div class="col-md-6">
+                <input th:field="*{label}" placeholder="Label" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <input th:field="*{capacity}" type="number" placeholder="Capacity" class="form-control" required>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">Add</button>
+            </div>
+        </div>
+    </form>
+
+    <a th:href="@{/admin/restaurants}" class="btn btn-outline-secondary">Back</a>
+</div>
+</body>
+</html>

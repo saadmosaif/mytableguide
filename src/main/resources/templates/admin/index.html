@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Admin | Dashboard</title>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 </head>
 <body class="bg-light">
 <div class="container py-5">
-    <h2>Admin Dashboard</h2>
-    <p class="text-muted">Quick stats</p>
-    <div class="row g-3 my-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Admin Dashboard</h2>
+        <a th:href="@{/logout}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <div class="row g-3">
         <div class="col-md-4">
-            <div class="card p-3">
+            <div class="card p-3 text-center shadow-sm">
                 <h5>Restaurants</h5>
-                <div class="display-6" th:text="${restaurantsCount}">0</div>
+                <h2 th:text="${restaurantsCount}">0</h2>
+                <a th:href="@{/admin/restaurants}" class="btn btn-sm btn-primary mt-2">Manage</a>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card p-3">
+            <div class="card p-3 text-center shadow-sm">
                 <h5>Reservations</h5>
-                <div class="display-6" th:text="${reservationsCount}">0</div>
+                <h2 th:text="${reservationsCount}">0</h2>
+                <a th:href="@{/admin/reservations}" class="btn btn-sm btn-primary mt-2">View All</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 text-center shadow-sm">
+                <h5>Owners</h5>
+                <h2 th:text="${usersCount}">0</h2>
+                <a th:href="@{/admin/owners}" class="btn btn-sm btn-primary mt-2">Manage</a>
             </div>
         </div>
     </div>
-
-    <a class="btn btn-primary" th:href="@{/admin/restaurants}">Manage Restaurants</a>
-    <a class="btn btn-outline-primary ms-2" th:href="@{/admin/reservations}">View Reservations</a>
-    <a class="btn btn-outline-danger float-end" th:href="@{/logout}">Logout</a>
 </div>
 </body>
 </html>

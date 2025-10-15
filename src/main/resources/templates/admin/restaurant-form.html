@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Form</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h2 th:text="${restaurant.id == null ? 'Add Restaurant' : 'Edit Restaurant'}">Restaurant</h2>
+
+    <form th:action="@{/admin/restaurants/save}" method="post" th:object="${restaurant}">
+        <input type="hidden" th:field="*{id}">
+        <div class="mb-3">
+            <label>Name</label>
+            <input th:field="*{name}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Address</label>
+            <input th:field="*{address}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label>Phone</label>
+            <input th:field="*{phone}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label>Email</label>
+            <input th:field="*{email}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label>Opening Hours</label>
+            <input th:field="*{openingHours}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label>Assign Owner</label>
+            <select name="owner" class="form-select">
+                <option value="">— No Owner —</option>
+                <option th:each="o : ${owners}"
+                        th:value="${o.id}"
+                        th:text="${o.username}"
+                        th:selected="${restaurant.owner != null and o.id == restaurant.owner.id}">
+                </option>
+            </select>
+        </div>
+        <button class="btn btn-primary">Save</button>
+        <a th:href="@{/admin/restaurants}" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>
