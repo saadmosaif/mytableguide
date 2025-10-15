@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin | Restaurants</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h2>Restaurants</h2>
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr><th>ID</th><th>Name</th><th>Address</th><th>Opening</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${restaurants}">
+            <td th:text="${r.id}">1</td>
+            <td th:text="${r.name}">Le Gourmet</td>
+            <td th:text="${r.address}">Casablanca</td>
+            <td th:text="${r.openingHours}">09:00-23:00</td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/admin}" class="btn btn-outline-secondary">Back</a>
+    <a class="btn btn-outline-danger float-end" th:href="@{/logout}">Logout</a>
+</div>
+</body>
+</html>

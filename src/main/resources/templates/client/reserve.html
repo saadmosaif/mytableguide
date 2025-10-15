@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${restaurant.name} + ' | Reserve a Table'">Reserve</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 720px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            background-color: #ffffff;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .brand {
+            font-weight: 700;
+            font-size: 2rem;
+            color: #4a6cf7;
+            letter-spacing: -0.5px;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #e0e6ed;
+            transition: all 0.3s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #4a6cf7;
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+        }
+        .btn-primary {
+            background-color: #4a6cf7;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #3a5ce5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+        }
+        label {
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+        .header-section {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header-section:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #4a6cf7;
+            border-radius: 3px;
+        }
+        .form-icon {
+            color: #4a6cf7;
+            margin-right: 10px;
+        }
+        .footer-text {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+        .footer-brand {
+            color: #4a6cf7;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container py-5">
+    <div class="header-section">
+        <h2 class="brand mb-2" th:text="${restaurant.name}">Restaurant Name</h2>
+        <p class="text-muted mb-4">
+            <i class="fas fa-map-marker-alt me-2"></i>
+            <span th:text="${restaurant.address}">Restaurant address</span>
+        </p>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger rounded-pill py-3 px-4 d-flex align-items-center">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span th:text="${error}"></span>
+    </div>
+
+    <form th:action="@{'/reserve/' + ${restaurant.id}}" th:object="${reservation}" method="post" class="card p-4 p-md-5">
+        <div class="text-center mb-4">
+            <div class="d-inline-block p-3 rounded-circle mb-3" style="background-color: rgba(74, 108, 247, 0.1);">
+                <i class="fas fa-utensils fa-2x" style="color: #4a6cf7;"></i>
+            </div>
+            <h3 class="mb-2">Reserve Your Table</h3>
+            <p class="text-muted">Complete the form below to book your dining experience</p>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">
+                <i class="fas fa-user form-icon"></i>Full Name
+            </label>
+            <input th:field="*{clientName}" class="form-control" placeholder="John Doe" required />
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">
+                <i class="fas fa-envelope form-icon"></i>Email
+            </label>
+            <input th:field="*{clientEmail}" type="email" class="form-control" placeholder="you@example.com" required />
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <label class="form-label">
+                    <i class="fas fa-users form-icon"></i>Guests
+                </label>
+                <input th:field="*{guests}" type="number" min="1" max="20" class="form-control" value="2" required />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">
+                    <i class="fas fa-chair form-icon"></i>Table
+                </label>
+                <select name="tableId" class="form-select" required>
+                    <option value="">Select a table</option>
+                    <option th:each="t : ${tables}" th:value="${t.id}"
+                            th:text="${t.label + ' (' + t.capacity + ' ppl)'}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">
+                <i class="far fa-calendar-alt form-icon"></i>Date & Time
+            </label>
+            <input th:field="*{reservationTime}" type="datetime-local" class="form-control" required />
+        </div>
+
+        <button class="btn btn-primary w-100 py-3 mt-3">
+            <i class="fas fa-check-circle me-2"></i>Confirm Reservation
+        </button>
+
+        <div class="text-center mt-4">
+            <p class="footer-text">
+                Powered by <span class="footer-brand">MyTableGuide</span>
+            </p>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Add subtle animation when form loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.style.opacity = '0';
+        form.style.transform = 'translateY(20px)';
+        form.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+
+        setTimeout(function() {
+            form.style.opacity = '1';
+            form.style.transform = 'translateY(0)';
+        }, 100);
+    });
+</script>
+</body>
+</html>

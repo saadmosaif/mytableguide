@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Reservation Confirmed</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            background-color: #ffffff;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .success-header {
+            background-color: #4a6cf7;
+            color: white;
+            padding: 30px 20px;
+            position: relative;
+        }
+        .success-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+        }
+        .success-title {
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        .success-subtitle {
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        .success-body {
+            padding: 40px 30px;
+        }
+        .reservation-detail {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+        .detail-icon {
+            color: #4a6cf7;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            width: 24px;
+            text-align: center;
+        }
+        .detail-label {
+            color: #718096;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        .detail-value {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .btn-primary {
+            background-color: #4a6cf7;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #3a5ce5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+        }
+        .btn-outline-primary {
+            color: #4a6cf7;
+            border-color: #4a6cf7;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-outline-primary:hover {
+            background-color: #4a6cf7;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+        }
+        .footer-text {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-top: 30px;
+        }
+        .footer-brand {
+            color: #4a6cf7;
+            font-weight: 600;
+        }
+        @media (max-width: 576px) {
+            .success-header {
+                padding: 25px 15px;
+            }
+            .success-icon {
+                font-size: 2.5rem;
+                width: 70px;
+                height: 70px;
+                line-height: 70px;
+            }
+            .success-body {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="card">
+    <div class="success-header">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h2 class="success-title">Reservation Confirmed</h2>
+        <p class="success-subtitle">Your table has been successfully reserved</p>
+    </div>
+
+    <div class="success-body">
+        <h4>Thank you, <span th:text="${reservation.clientName}">Client</span>!</h4>
+        <p>Your reservation details are confirmed and have been sent to your email.</p>
+
+        <div class="reservation-detail">
+            <div class="detail-item">
+                <i class="fas fa-utensils detail-icon"></i>
+                <span class="detail-label">Restaurant:</span>
+                <span class="detail-value" th:text="${reservation.restaurant.name}">Restaurant Name</span>
+            </div>
+
+            <div class="detail-item">
+                <i class="far fa-calendar-alt detail-icon"></i>
+                <span class="detail-label">Date & Time:</span>
+                <span class="detail-value" th:text="${#temporals.format(reservation.reservationTime, 'dd MMM yyyy HH:mm')}">Date</span>
+            </div>
+
+            <div class="detail-item">
+                <i class="fas fa-users detail-icon"></i>
+                <span class="detail-label">Guests:</span>
+                <span class="detail-value" th:text="${reservation.guests}">2</span>
+            </div>
+        </div>
+
+        <p class="text-muted">
+            <i class="fas fa-info-circle me-2"></i>
+            You'll receive a confirmation once the restaurant approves your reservation.
+        </p>
+
+        <a href="/" class="btn btn-outline-primary mt-3">
+            <i class="fas fa-home me-2"></i>Return to Home
+        </a>
+
+        <p class="footer-text">
+            Powered by <span class="footer-brand">MyTableGuide</span>
+        </p>
+    </div>
+</div>
+
+<script>
+    // Add subtle animation when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const card = document.querySelector('.card');
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+
+        setTimeout(function() {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 100);
+    });
+</script>
+</body>
+</html>

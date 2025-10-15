@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Owner | Dashboard</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h2>Owner Dashboard</h2>
+    <p class="text-muted">Select a restaurant to manage</p>
+
+    <div class="list-group">
+        <a class="list-group-item list-group-item-action"
+           th:each="r : ${restaurants}"
+           th:href="@{'/owner/restaurants/' + ${r.id} + '/reservations'}">
+            <strong th:text="${r.name}">Le Gourmet</strong>
+            <span class="text-muted" th:text="${r.address}">Casablanca</span>
+        </a>
+    </div>
+
+    <a class="btn btn-outline-danger mt-3" th:href="@{/logout}">Logout</a>
+</div>
+</body>
+</html>

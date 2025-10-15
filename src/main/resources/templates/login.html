@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div class="container py-5" style="max-width:420px;">
+    <div class="card p-4">
+        <h3 class="mb-3 text-center">MyTableGuide</h3>
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input name="username" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input name="password" type="password" class="form-control" required />
+            </div>
+            <button class="btn btn-primary w-100">Login</button>
+        </form>
+        <p class="text-muted mt-3" style="font-size:.9rem;">
+            Try <strong>admin/admin123</strong> or <strong>owner/owner123</strong> (dev only)
+        </p>
+    </div>
+</div>
+</body>
+</html>
