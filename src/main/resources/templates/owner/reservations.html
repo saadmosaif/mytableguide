@@ -4,11 +4,7 @@
     <meta charset="UTF-8" />
     <title>Reservations - Owner</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
-    <style>
-        .badge-pending { background-color: #ffc107; }
-        .badge-confirmed { background-color: #28a745; }
-        .badge-canceled { background-color: #dc3545; }
-    </style>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body class="bg-light">
 <div class="container py-5">
@@ -35,9 +31,9 @@
             <td th:text="${#temporals.format(res.reservationTime, 'dd MMM yyyy HH:mm')}">15 Oct 2025</td>
             <td>
           <span th:switch="${res.status}">
-            <span th:case="'PENDING'" class="badge badge-pending text-dark">Pending</span>
-            <span th:case="'CONFIRMED'" class="badge badge-confirmed">Confirmed</span>
-            <span th:case="'CANCELED'" class="badge badge-canceled">Canceled</span>
+            <span th:case="'PENDING'" class="status status-pending">Pending</span>
+            <span th:case="'CONFIRMED'" class="status status-confirmed">Confirmed</span>
+            <span th:case="'CANCELED'" class="status status-canceled">Canceled</span>
           </span>
             </td>
             <td>
@@ -63,5 +59,6 @@
            class="btn btn-primary ms-2">Tables</a>
     </div>
 </div>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>
